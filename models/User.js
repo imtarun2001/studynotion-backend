@@ -42,6 +42,12 @@ const userSchema = new mongoose.Schema(
                 ref: "Course"
             }
         ],
+        ratingAndReviews: [
+            {
+                type: mongoose.Schema.Types.ObjectId,
+                ref: "RatingAndReview"
+            }
+        ],
         otps: [
             {
                 type: mongoose.Schema.Types.ObjectId,

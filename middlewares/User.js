@@ -5,7 +5,8 @@ require('dotenv').config();
 exports.auth = (req,res,next) => {
     try {
         //fetch login token
-        const loginToken = req.cookies.loginToken || req.headers("Authorisation").replace("Bearer ","") || req.body.existingUser.loginToken;
+        const loginToken = req.cookies.loginToken || req.headers["Authorisation"]?.replace("Bearer ","");
+        console.log("loginToken : ",loginToken);
 
         //validate loginToken
         if(!loginToken) {
@@ -21,7 +22,7 @@ exports.auth = (req,res,next) => {
         const verifiedToken = jwt.verify(loginToken,process.env.JWT_SECRET);
 
         //add the verifiedToken in req.user
-        req.user.verifiedToken = verifiedToken;
+        req.user = verifiedToken;
 
         //move to next middleware
         next();
@@ -40,7 +41,7 @@ exports.auth = (req,res,next) => {
 exports.isStudent = (req,res,next) => {
     try {
         //check whether student tries to access or not
-        if(req.user.loginToken !== "Student") {
+        if(req.user.role !== "Student") {
             return res.status(401).json(
                 {
                     success: false,
@@ -66,7 +67,7 @@ exports.isStudent = (req,res,next) => {
 exports.isInstructor = (req,res,next) => {
     try {
         //check whether instructor tries to access or not
-        if(req.user.loginToken !== "Instructor") {
+        if(req.user.role !== "Instructor") {
             return res.status(401).json(
                 {
                     success: false,
@@ -92,7 +93,7 @@ exports.isInstructor = (req,res,next) => {
 exports.isAdmin = (req,res,next) => {
     try {
         //check whether admin tries to access or not
-        if(req.user.loginToken !== "Admin") {
+        if(req.user.role !== "Admin") {
             return res.status(401).json(
                 {
                     success: false,

@@ -9,28 +9,34 @@ userRouter.get(`/getAllStudents`,getAllStudents);
 
 const {auth,isStudent,isInstructor,isAdmin} = require('../middlewares/User');
 
-userRouter.get(`/students`,auth,isStudent,(req,res) => {
+userRouter.get(`/student-dashboard`,auth,isStudent,(req,res) => {
+    const user = req.user;
     res.status(200).json(
         {
             success: true,
+            data: user,
             message: `Welcome to students route`
         }
     );
 });
 
-userRouter.get(`/instructors`,auth,isInstructor,(req,res) => {
+userRouter.get(`/instructor-dashboard`,auth,isInstructor,(req,res) => {
+    const user = req.user;
     res.status(200).json(
         {
             success: true,
+            data: user,
             message: `Welcome to instructors route`
         }
     );
 });
 
-userRouter.get(`/admin`,auth,isAdmin,(req,res) => {
+userRouter.get(`/admin-dashboard`,auth,isAdmin,(req,res) => {
+    const user = req.user;
     res.status(200).json(
         {
             success: true,
+            data: user,
             message: `Welcome to admins route`
         }
     );

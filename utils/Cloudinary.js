@@ -1,9 +1,13 @@
 const cloudinary = require('cloudinary').v2;
 
-exports.uploadMediaToCloudinary = async (url,folder) => {
+exports.uploadMediaToCloudinary = async (url,file,folder) => {
     try {
-        const uploadedImage = await cloudinary.uploader.upload(url,{folder,type: 'upload',resource_type: 'image'});
-        return uploadedImage;
+        const options = {
+            folder,
+            resource_type: 'auto',
+            type: url ? 'upload' : null
+        }
+        return await cloudinary.uploader.upload(url ? url : file.tempFilePath,options);
     } catch(err) {
         console.log(`error in uploadMediaToCloudinary`);
         console.log(`Error while uploading media in cloudinary`);
