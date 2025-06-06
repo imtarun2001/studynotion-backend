@@ -35,4 +35,4 @@ exports.createSubSection = async (req,res) => {
             }
         );
     }
-}
+};

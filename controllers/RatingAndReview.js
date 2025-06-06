@@ -4,7 +4,7 @@ const Course = require('../models/Course');
 
 exports.createRatingAndReview = async (req,res) => {
     try {
-        const {userid,courseid,rating,review} = req.body;
+        const {courseid,rating,review} = req.body;
         if(!rating || !review) {
             return res.status(400).json(
                 {
@@ -13,9 +13,37 @@ exports.createRatingAndReview = async (req,res) => {
                 }
             );
         }
+        const userid = req.user._id;
+        const existingUser = await User.findById(userid);
+        if(!existingUser) {
+            return res.status(404).json(
+                {
+                    success: false,
+                    message: `User Not found`
+                }
+            );
+        }
+        const existingCourse = await Course.findById(courseid);
+        if(!existingCourse) {
+            return res.status(404).json(
+                {
+                    success: false,
+                    message: `Course Not found`
+                }
+            );
+        }
+        const alreadyReviewed = await RatingAndReview.findOne({user: userid,course: courseid});
+        if(alreadyReviewed) {
+            return res.status(400).json(
+                {
+                    success: false,
+                    message: `User already Reviewed`
+                }
+            );
+        }
         const ratingAndReview = await RatingAndReview.create({user: userid,course: courseid,rating,review});
-        const updatedUser = await User.findByIdAndUpdate({userid},{$push: {ratingAndReviews: ratingAndReview._id}},{new: true});
-        const updatedCourse = await Course.findByIdAndUpdate({courseid},{$push: {ratingAndReviews: ratingAndReview._id}},{new: true});
+        const updatedUser = await User.findByIdAndUpdate(userid,{$push: {ratingAndReviews: ratingAndReview._id}},{new: true});
+        const updatedCourse = await Course.findByIdAndUpdate(courseid,{$push: {ratingAndReviews: ratingAndReview._id}},{new: true});
         res.status(201).json(
             {
                 success: true,

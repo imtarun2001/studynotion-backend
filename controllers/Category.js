@@ -20,4 +20,26 @@ exports.createCategory = async (req,res) => {
             }
         );
     }
-}
+};
+
+exports.getCategories = async (req,res) => {
+    try {
+        const categories = await Category.find({},{categoryName: true,courses: true});
+        res.status(200).json(
+            {
+                success: true,
+                data: categories,
+                message: `Ok`
+            }
+        );
+    }
+    catch(err) {
+        res.status(500).json(
+            {
+                success: false,
+                data: `error in getCategories`,
+                message: err.message
+            }
+        );
+    }
+};

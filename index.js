@@ -11,6 +11,8 @@ const sectionRouter = require('./routes/Section');
 const subSectionRouter = require('./routes/SubSection');
 const ratingAndReviewRouter = require('./routes/RatingAndReview');
 const additionalDetailRouter = require('./routes/AdditionalDetail');
+const changePasswordRouter = require('./routes/ChangePassword');
+const forgotPasswordRouter = require('./routes/ForgotPassword');
 const cloudinaryConnect = require('./configs/Cloudinary');
 const mongodbConnect = require('./configs/MongoDB');
 
@@ -26,6 +28,6 @@ app.use(fileUpload(
 ));
 const PORT = process.env.PORT || 5000;
 app.listen(PORT,() => console.log(`Server hoisted at ${PORT}`));
-app.use(`/studynotion/v1`,otpRouter,userRouter,categoryRouter,courseRouter,sectionRouter,subSectionRouter,ratingAndReviewRouter,additionalDetailRouter);
+app.use(`/studynotion/v1`,otpRouter,userRouter,categoryRouter,courseRouter,sectionRouter,subSectionRouter,ratingAndReviewRouter,additionalDetailRouter,changePasswordRouter,forgotPasswordRouter);
 cloudinaryConnect();
 mongodbConnect();

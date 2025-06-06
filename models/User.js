@@ -54,6 +54,12 @@ const userSchema = new mongoose.Schema(
                 ref: "Otp"
             }
         ],
+        tokenForResettingPassword: {
+            type: String
+        },
+        tokenExpiresIn: {
+            type: Date
+        },
         createdAt: {
             type: Date,
             default: Date.now(),
