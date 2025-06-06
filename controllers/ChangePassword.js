@@ -1,6 +1,7 @@
 const User = require('../models/User');
 const bcrypt = require('bcrypt');
 const mailSender = require('../utils/MailSender');
+const {congratulation} = require('../templates/ResetPasswordTemplate');
 
 exports.changePassword = async (req,res) => {
     try {
@@ -33,7 +34,8 @@ exports.changePassword = async (req,res) => {
         }
         const hashedPassword = await bcrypt.hash(newPassword,10);
         const updatedUser = await User.findByIdAndUpdate(existingUser._id,{password: hashedPassword},{new: true});
-        await mailSender(existingUser.email,"Regarding password updation","Congratulations 🎉 , your password has been updated successfully.");
+        const mailBody = congratulation(updatedUser.firstName);
+        await mailSender(existingUser.email,"Regarding password updation",mailBody);
         res.status(200).json(
             {
                 success: true,

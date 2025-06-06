@@ -1,6 +1,7 @@
 const User = require('../models/User');
 const mailSender = require('../utils/MailSender');
 const bcrypt = require('bcrypt');
+const {tokenLink,congratulation} = require('../templates/ResetPasswordTemplate');
 
 exports.forgotPasswordTokenGeneration = async (req,res) => {
     try {
@@ -17,7 +18,8 @@ exports.forgotPasswordTokenGeneration = async (req,res) => {
         const token = crypto.randomUUID();
         const updatedUser = await User.findByIdAndUpdate(existingUser._id,{tokenForResettingPassword: token,tokenExpiresIn: Date.now() + 5 * 60 * 1000},{new: true});
         const url = `http://localhost:3000/resetPassword/${token}`;
-        await mailSender(email,`Regarding reset password`,`Click the link below to reset your password \n ${url}`);
+        const mailBody = tokenLink(url,5);
+        await mailSender(email,`Regarding reset password`,mailBody);
         res.status(200).json(
             {
                 success: true,
@@ -66,7 +68,8 @@ exports.resetPassword = async (req,res) => {
         }
         const hashedPassword = await bcrypt.hash(newPassword,10);
         await User.findByIdAndUpdate(existingUser._id,{password: hashedPassword},{new: true});
-        await mailSender(email,`Password reset successful`,`Congratulations ${existingUser.firstName}, Your password have been updated successfully`);
+        const mailBody = congratulation(existingUser.firstName);
+        await mailSender(email,`Password reset successful`,mailBody);
         const updatedUser = await User.findOneAndUpdate({email},{tokenForResettingPassword: undefined,tokenExpiresIn: undefined},{new: true});
         res.status(200).json(
             {
