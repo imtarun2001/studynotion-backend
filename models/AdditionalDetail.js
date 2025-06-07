@@ -7,16 +7,13 @@ const additionalDetailsSchema = new mongoose.Schema(
             enum: ["Male","Female","Others"]
         },
         dateOfBirth: {
-            type: Date,
-            required: true
+            type: Date
         },
         about: {
-            type: String,
-            required: true
+            type: String
         },
         profession: {
-            type: String,
-            required: true
+            type: String
         }
     }
 );

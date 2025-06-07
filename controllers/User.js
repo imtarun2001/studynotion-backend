@@ -5,6 +5,7 @@ require('dotenv').config();
 const jwt = require('jsonwebtoken');
 const AdditionalDetail = require('../models/AdditionalDetail');
 const {uploadMediaToCloudinary} = require('../utils/Cloudinary');
+const mailSender = require('../utils/MailSender');
 
 //create user
 exports.signUp = async (req,res) => {
@@ -73,6 +74,9 @@ exports.signUp = async (req,res) => {
 
         //update the user by pushing the new mostRecentOtpDocument to otps array
         const updatedUser = await User.findByIdAndUpdate(createdUser._id,{$push: {otps: mostRecentOtpDocument._id}},{new: true});
+
+        //send mail
+        await mailSender(updatedUser.email,`Congratulations🎉`,`Your account has been created`);
 
         //return response
         res.status(201).json(

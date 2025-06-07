@@ -1,5 +1,4 @@
-
-const otpTemplate = (otp,validity) => {
+const messageReceived = (userName) => {
     return `<!DOCTYPE html>
             <html lang="en">
             <head>
@@ -11,17 +10,14 @@ const otpTemplate = (otp,validity) => {
                     <table cellpadding="0" cellspacing="0" width="100%" style="max-width: 600px; background-color: #ffffff; padding: 20px; box-shadow: 0 0 10px rgba(0,0,0,0.1);">
                         <tr>
                         <td style="text-align: center;">
-                            <h2 style="color: #333;">Your One-Time Password (OTP)</h2>
-                            <p style="font-size: 16px; color: #555;">Use the OTP below to proceed:</p>
-                            <p style="font-size: 28px; font-weight: bold; color: #2E86C1; margin: 20px 0;">${otp}</p>
-                            <p style="font-size: 14px; color: #777;">This OTP is valid for the next ${validity} minutes.</p>
+                            <h2 style="color: #333;">Your feedback received</h2>
+                            <p style="font-size: 16px; font-weight: bold; color: #2E86C1; margin: 20px 0;">Hello ${userName}, your feedback has been received successfully by our team. We appreciate your feedback and will surely look into it.</p>
                             <hr style="margin: 20px 0;"/>
-                            <p style="font-size: 12px; color: #aaa;">If you didn't request this, please ignore this email.</p>
                         </td>
                         </tr>
                     </table>
                     </body>
             </html>`;
-}
+};
 
-module.exports = otpTemplate;
+module.exports = messageReceived;
