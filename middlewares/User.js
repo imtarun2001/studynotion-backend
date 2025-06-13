@@ -6,7 +6,6 @@ exports.auth = (req,res,next) => {
     try {
         //fetch login token
         const loginToken = req.cookies.loginToken || req.headers["Authorisation"]?.replace("Bearer ","");
-        console.log("loginToken : ",loginToken);
 
         //validate loginToken
         if(!loginToken) {

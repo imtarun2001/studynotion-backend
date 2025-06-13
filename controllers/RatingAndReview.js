@@ -41,7 +41,8 @@ exports.createRatingAndReview = async (req,res) => {
                 }
             );
         }
-        const ratingAndReview = await RatingAndReview.create({user: userid,course: courseid,rating,review});
+        const flooredRating = String(rating).split('.') ? Math.floor(rating) + .5 : rating;
+        const ratingAndReview = await RatingAndReview.create({user: userid,course: courseid,rating: flooredRating,review});
         const updatedUser = await User.findByIdAndUpdate(userid,{$push: {ratingAndReviews: ratingAndReview._id}},{new: true});
         const updatedCourse = await Course.findByIdAndUpdate(courseid,{$push: {ratingAndReviews: ratingAndReview._id}},{new: true});
         res.status(201).json(
@@ -59,5 +60,13 @@ exports.createRatingAndReview = async (req,res) => {
                 message: err.message
             }
         );
+    }
+};
+
+exports.getRatingAndReviews = async (req,res) => {
+    try {
+
+    } catch(err) {
+
     }
 };
