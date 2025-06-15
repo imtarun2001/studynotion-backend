@@ -36,7 +36,7 @@ exports.signUp = async (req,res) => {
         //check user existence
         const existingUser = await User.findOne({email});
         if(existingUser) {
-            return res.status(400).json(
+            return res.status(401).json(
                 {
                     success: false,
                     message: `This Email Address has already been registered with us. Please try with different Email Address`
@@ -130,7 +130,7 @@ exports.login = async (req,res) => {
             return res.status(401).json(
                 {
                     success: false,
-                    message: `This Email Address has not been registered with us. Please signup first`
+                    message: `Password is incorrect`
                 }
             );
         }
